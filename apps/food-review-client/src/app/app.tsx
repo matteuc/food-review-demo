@@ -1,7 +1,7 @@
+import { BreakfastRating } from '@food-review-demo/api-interfaces';
 import {
   Box,
   Button,
-  ButtonBase,
   Step,
   StepContent,
   StepLabel,
@@ -16,12 +16,6 @@ import './app.module.css';
 import { LabeledIconButton } from './components/LabeledIconButton';
 export function App() {
   return <MainContent />;
-}
-
-enum BreakfastRating {
-  Bad = 'Bad',
-  Ok = 'Ok',
-  Good = 'Good',
 }
 
 const BREAKFAST_RATING_COLOR_MAP: Record<BreakfastRating, string> = {
@@ -64,8 +58,18 @@ export function MainContent() {
   };
 
   const handleSubmit = () => {
+    const { breakfastItem, breakfastRating } = questionAnswers;
+
+    if (!breakfastRating) return;
+
     // TODO - Submit answers
-    API.submitSurvey({}).then((res) => {
+    API.submitSurvey({
+      survey: {
+        userId,
+        breakfastItem,
+        breakfastRating,
+      },
+    }).then((res) => {
       console.log({ data: res.data });
     });
 
