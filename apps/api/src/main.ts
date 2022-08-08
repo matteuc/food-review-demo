@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as cors from 'cors';
-import { Message } from '@food-review-demo/api-interfaces';
+import { ApiRoutes, Message } from '@food-review-demo/api-interfaces';
 import { environment } from './environments/environment';
 import * as bodyParser from "body-parser"
 
@@ -12,19 +12,24 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-const greeting: Message = { message: 'Welcome to api!' };
-
 app.use(
   cors({
     origin: environment.clientUrl,
   })
 );
 
-app.post('/submit', (req, res) => {
+app.post(ApiRoutes.SubmitSurvey, (req, res) => {
   // TODO
   console.log({body: req.body})
 
-  res.send(greeting);
+  res.send({});
+});
+
+app.get(ApiRoutes.GetSurveyData, (req, res) => {
+  // TODO
+  console.log({params: req.params})
+
+  res.send({});
 });
 
 const port = process.env.port || 3333;

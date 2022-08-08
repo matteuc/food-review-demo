@@ -65,7 +65,7 @@ export function MainContent() {
 
   const handleSubmit = () => {
     // TODO - Submit answers
-    API.submitSurvey().then((res) => {
+    API.submitSurvey({}).then((res) => {
       console.log({ data: res.data });
     });
 

@@ -1,25 +1,49 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { } from '@food-review-demo/api-interfaces';
-import { environment } from "../environments/environment";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import {
+  ApiRoutes,
+  GetSurveyDataApiType,
+  SubmitSurveyApiType,
+} from '@food-review-demo/api-interfaces';
+import { environment } from '../environments/environment';
 
 export class BaseAPI {
-    static getConfig(): AxiosRequestConfig {
-        return {
-            baseURL: environment.apiUrl,
-        }
-    }
+  static getConfig(): AxiosRequestConfig {
+    return {
+      baseURL: environment.apiUrl,
+    };
+  }
 
-    static async get<TData = any>(path: string) {
-        return axios.get<TData>(path, this.getConfig())
-    }
+  static async get<TData = any, TPayload = any>(
+    path: string,
+    params: TPayload
+  ) {
+    return axios.get<TData>(path, { ...this.getConfig(), params });
+  }
 
-    static async post<TData = any>(path: string, payload: any) {
-        return axios.post<TData>(path, payload, this.getConfig())
-    }
+  static async post<TData = any, TPayload = any>(
+    path: string,
+    payload: TPayload
+  ) {
+    return axios.post<TData, AxiosResponse<TData, any>, TPayload>(
+      path,
+      payload,
+      this.getConfig()
+    );
+  }
 }
 
 export class API {
-    static async submitSurvey() {
-        return BaseAPI.post("/submit", {msg: "Hello!"})
-    }
+  static async submitSurvey(payload: SubmitSurveyApiType['payload']) {
+    return BaseAPI.post<
+      SubmitSurveyApiType['response'],
+      SubmitSurveyApiType['payload']
+    >(ApiRoutes.SubmitSurvey, payload);
+  }
+
+  static async getSurveyData(payload: GetSurveyDataApiType['payload']) {
+    return BaseAPI.get<
+      GetSurveyDataApiType['response'],
+      GetSurveyDataApiType['payload']
+    >(ApiRoutes.GetSurveyData, payload);
+  }
 }
