@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ComponentProps, useState } from 'react';
+import { API } from '../utilities/api';
 import { Logger } from '../utilities/logger';
 import './app.module.css';
 import { LabeledIconButton } from './components/LabeledIconButton';
@@ -64,9 +65,11 @@ export function MainContent() {
 
   const handleSubmit = () => {
     // TODO - Submit answers
+    API.submitSurvey().then((res) => {
+      console.log({ data: res.data });
+    });
 
-    Logger.debug({userId, questionAnswers})
-
+    Logger.debug({ userId, questionAnswers });
   };
 
   const submitDisabled = !(
@@ -147,6 +150,7 @@ export function MainContent() {
 
                     return (
                       <LabeledIconButton
+                        key={ratingKey}
                         label={ratingLabel}
                         onClick={() => {
                           handleClickRating(ratingEnum);
@@ -173,7 +177,7 @@ export function MainContent() {
               <Button
                 variant="outlined"
                 disabled={submitDisabled}
-                onChange={handleSubmit}
+                onClick={handleSubmit}
               >
                 Submit
               </Button>
