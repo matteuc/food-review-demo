@@ -1,7 +1,11 @@
-import { SurveyResponse } from './models';
+import { BreakfastRating, SurveyResponse } from './models';
 
 export type SubmitSurveyPayload = {
-  survey: SurveyResponse
+  survey: {
+    userId: string,
+    breakfastItem: string,
+    breakfastRating: BreakfastRating
+  }
 };
 
 export type SubmitSurveyResponse = {

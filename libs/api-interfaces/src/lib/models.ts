@@ -5,7 +5,9 @@ export enum BreakfastRating {
   }
 
 export type SurveyResponse = {
+    responseId: string,
     userId: string,
     breakfastItem: string,
     breakfastRating: BreakfastRating
+    createdAt: Date,
 }
