@@ -1,6 +1,6 @@
 export enum BreakfastRating {
     Bad = 'Bad',
-    Ok = 'Ok',
+    OK = 'OK',
     Good = 'Good',
   }
 

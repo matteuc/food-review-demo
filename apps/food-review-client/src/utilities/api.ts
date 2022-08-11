@@ -34,16 +34,20 @@ export class BaseAPI {
 
 export class API {
   static async submitSurvey(payload: SubmitSurveyApiType['payload']) {
-    return BaseAPI.post<
-      SubmitSurveyApiType['response'],
-      SubmitSurveyApiType['payload']
-    >(ApiRoutes.SubmitSurvey, payload);
+    return (
+      await BaseAPI.post<
+        SubmitSurveyApiType['response'],
+        SubmitSurveyApiType['payload']
+      >(ApiRoutes.SubmitSurvey, payload)
+    ).data;
   }
 
   static async getSurveyData(payload: GetSurveyDataApiType['payload']) {
-    return BaseAPI.get<
-      GetSurveyDataApiType['response'],
-      GetSurveyDataApiType['payload']
-    >(ApiRoutes.GetSurveyData, payload);
+    return (
+      await BaseAPI.get<
+        GetSurveyDataApiType['response'],
+        GetSurveyDataApiType['payload']
+      >(ApiRoutes.GetSurveyData, payload)
+    ).data;
   }
 }

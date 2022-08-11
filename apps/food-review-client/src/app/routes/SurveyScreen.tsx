@@ -17,14 +17,9 @@ import {
 import { useState, ComponentProps } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API } from '../../utilities/api';
+import { BREAKFAST_RATING_COLOR_MAP } from '../../utilities/constants';
 import { Logger } from '../../utilities/logger';
 import { LabeledIconButton } from '../components/LabeledIconButton';
-
-const BREAKFAST_RATING_COLOR_MAP: Record<BreakfastRating, string> = {
-  [BreakfastRating.Bad]: 'red',
-  [BreakfastRating.Ok]: 'orange',
-  [BreakfastRating.Good]: 'green',
-};
 
 export default function SurveyScreen() {
   /**
@@ -71,7 +66,7 @@ export default function SurveyScreen() {
   const handleChangeUserId: ComponentProps<typeof TextField>['onChange'] = (
     changeEvent
   ) => {
-    setUserId(changeEvent.currentTarget.value);
+    setUserId(changeEvent?.currentTarget?.value || '');
   };
 
   /**
@@ -83,7 +78,7 @@ export default function SurveyScreen() {
   >['onChange'] = (changeEvent) => {
     setQuestionAnswers((oldAnswers) => ({
       ...oldAnswers,
-      breakfastItem: changeEvent.currentTarget.value,
+      breakfastItem: changeEvent?.currentTarget?.value || '',
     }));
   };
 
@@ -102,6 +97,13 @@ export default function SurveyScreen() {
         breakfastItem,
         breakfastRating,
       },
+    });
+
+    setUserId('');
+
+    setQuestionAnswers({
+      breakfastItem: '',
+      breakfastRating: null,
     });
 
     handleOpenSuccessDialog();
@@ -143,16 +145,19 @@ export default function SurveyScreen() {
   return (
     <>
       <Box
-        width="calc(100% - 80px)"
-        height="100vh"
-        p={5}
-        justifyItems="center"
+        alignItems="center"
         display="flex"
+        justifyItems="center"
         flexDirection={'column'}
       >
         <Typography variant="h4" align="center">
           The Breakfast Study
         </Typography>
+        <Box my={1} />
+
+        <Button onClick={handleViewSummary} variant="outlined">
+          View Survey Summary
+        </Button>
 
         <Box my={2} />
 
@@ -161,7 +166,8 @@ export default function SurveyScreen() {
             <StepLabel>Enter Your Username</StepLabel>
             <StepContent>
               <TextField
-                label="loco-for-moco"
+                placeholder="loco-for-moco"
+                label="User ID"
                 helperText="Please enter your unique user ID"
                 onChange={handleChangeUserId}
                 value={userId || ''}
@@ -181,7 +187,8 @@ export default function SurveyScreen() {
 
                 <TextField
                   onChange={handleChangeBreakfastItem}
-                  label="Loco Moco"
+                  label="Breakfast Item"
+                  placeholder="Loco Moco"
                   value={questionAnswers.breakfastItem || ''}
                 />
               </Box>
@@ -206,20 +213,21 @@ export default function SurveyScreen() {
                 </Typography>
 
                 <Box my={2} />
-                <Box display="flex" justifyContent={'space-between'}>
+                <Box display="flex">
                   {Object.entries(BreakfastRating).map(
                     ([ratingKey, ratingLabel]) => {
                       const ratingEnum = ratingKey as BreakfastRating;
 
                       return (
-                        <LabeledIconButton
-                          key={ratingKey}
-                          label={ratingLabel}
-                          onClick={() => {
-                            handleClickRating(ratingEnum);
-                          }}
-                          color={BREAKFAST_RATING_COLOR_MAP[ratingEnum]}
-                        />
+                        <Box mr={5} key={ratingKey}>
+                          <LabeledIconButton
+                            label={ratingLabel}
+                            onClick={() => {
+                              handleClickRating(ratingEnum);
+                            }}
+                            color={BREAKFAST_RATING_COLOR_MAP[ratingEnum]}
+                          />
+                        </Box>
                       );
                     }
                   )}
@@ -291,7 +299,9 @@ const SurveySubmissionSuccessDialog: React.FC<{
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose} color="inherit">Cancel</Button>
+        <Button onClick={props.handleClose} color="inherit">
+          Cancel
+        </Button>
         <Button onClick={props.handleViewSummary} autoFocus>
           View Summary
         </Button>
