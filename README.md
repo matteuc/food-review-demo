@@ -2,6 +2,54 @@
 
 # FoodReviewDemo
 
+## Getting Started
+
+### Installing the Depedencies
+
+Download the following:
+- [Git](https://git-scm.com/downloads)
+- [Node](https://nodejs.org/en/download/)
+- [VSCode](https://code.visualstudio.com/download) or your favorite coding IDE.
+
+Once you have installed the programs above, run `npm`, `node`, and `git` in your terminal. These commands are connected to your system's PATH automatically (as of 8/11/22) but if they are not, consult Stack Overflow or Google on how to do this (':
+
+Now we will install the project's dependencies (third party libraries that the app relies on)
+
+```bash
+# From this project's root folder (same level as this README)
+
+# Install dependencies
+npm install
+
+```
+
+### Running the Application
+
+You are ready to run the application! You will be starting up two different terminals.
+
+In the first terminal (from this project's root folder), run:
+
+```bash
+# Starts the React Client
+npm run start:client
+```
+
+In the second terminal, run:
+```bash
+# Starts the API Server
+npm run start:server
+```
+
+Congratulations! Both apps are now running and should be available at the URLs below
+
+**React Client:** http://localhost:4200/
+
+**API Server:** http://localhost:3333/
+
+> Documentation below was auto-generated with the 'nx' tool. Feel free to give it a read!
+
+# Nx Documentation
+
 This project was generated using [Nx](https://nx.dev).
 
 <p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>

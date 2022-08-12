@@ -28,6 +28,26 @@ export default function SurveyScreen() {
   const [userId, setUserId] = useState('');
 
   /**
+   * Updating state (Vanilla JS)
+   * 
+   * var counter = 0
+   * 
+   * counter = counter + 1
+   * 
+   * counterContainer.text = counter
+   * 
+   * 
+   * Updating state (React)
+   * 
+   *       [value, value-setter]
+   * const [counter, setCounter] = useState(0);
+   * 
+   * setCounter(counter + 1)
+   * 
+   * ~UI automatically updates~
+   */
+
+  /**
    * State hook to store the current open state of the survey success dialog
    */
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
@@ -38,7 +58,7 @@ export default function SurveyScreen() {
   const navigate = useNavigate();
 
   /**
-   * State Hook to store the value from the breakfast item and rating input fields
+   * State Hook to store the values from the breakfast item and rating input fields
    */
   const [questionAnswers, setQuestionAnswers] = useState<{
     breakfastItem: string;
@@ -53,6 +73,14 @@ export default function SurveyScreen() {
    * @param rating The BreakfastRating that was clicked
    */
   const handleClickRating = (rating: BreakfastRating) => {
+    /**
+     * Spread Operator:
+     * 
+     * ...
+     * 
+     * This operator helps you spread out the items in a list/array
+     * OR the key-value pairs in an object
+     */
     setQuestionAnswers((oldAnswers) => ({
       ...oldAnswers,
       breakfastRating: rating,
@@ -66,6 +94,43 @@ export default function SurveyScreen() {
   const handleChangeUserId: ComponentProps<typeof TextField>['onChange'] = (
     changeEvent
   ) => {
+    /**
+     * ?
+     * 
+     * 'Optional chaining' is the concept of conditionally 
+     * accessing an object property; often times, you will need to access
+     * a nested object property but you may be unsure if its parent object
+     * exists. See the example below where I use an 'optional chaining' 
+     * operator to conditionally access 'morningGreeting.text'
+     * 
+     * 
+     * type MorningGreeting = {
+     *   morningGreeting: {
+     *     text: string
+     *   } | null
+     * }
+     *      
+     * var messageFromJoh: MorningGreeting = {
+     *   morningGreeting: {
+     *     text: "Hello!"
+     *  }
+     * }
+     * 
+     * var messageFromJane: MorningGreeting = {
+     *   morningGreeting: null
+     * }
+     * 
+     * In JS, the code below would throw a runtime error
+     * 
+     * In TS, code will not compile
+     * 
+     * messageFromJane.morningGreeting.text
+     * 
+     * This code will compile in TS
+     * 
+     * messageFromJane.morningGreeting?.text
+     * 
+     */
     setUserId(changeEvent?.currentTarget?.value || '');
   };
 
@@ -87,10 +152,27 @@ export default function SurveyScreen() {
    * @returns void
    */
   const handleSubmit = async () => {
+    /**
+     * Deconstruction
+     * 
+     * Pulling out the keys you want from an object and initializing them as variables
+     * 
+     * var { key, key1, ... } = targetObject
+     * 
+     * The deconstructed code is equivalent to:
+     * 
+     * var key = targetObject.key
+     * 
+     * var key1 = targetObject.key1
+     * 
+     */
     const { breakfastItem, breakfastRating } = questionAnswers;
 
     if (!breakfastRating) return;
 
+    /**
+     * Submits survey data to my API
+     */
     await API.submitSurvey({
       survey: {
         userId,
@@ -99,6 +181,9 @@ export default function SurveyScreen() {
       },
     });
 
+    /**
+     * Clears input fields
+     */
     setUserId('');
 
     setQuestionAnswers({
@@ -107,8 +192,6 @@ export default function SurveyScreen() {
     });
 
     handleOpenSuccessDialog();
-
-    Logger.debug({ userId, questionAnswers });
   };
 
   /**

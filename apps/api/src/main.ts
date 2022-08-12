@@ -20,6 +20,14 @@ const app = express();
  *
  * If the server shuts down, this data will be lost
  */
+
+/**
+ * The object structure of 'breakfastSurveysByUser'
+ * {
+ *   "mattchu": [SurveyResponse],
+ *   "chicken": [SurveyResponse],
+ * }
+ */
 const breakfastSurveysByUser: Record<string, Set<SurveyResponse> | undefined> =
   {};
 
